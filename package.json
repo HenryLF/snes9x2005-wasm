@@ -4,6 +4,12 @@
   "description": "A port of [snes9x2005](https://github.com/libretro/snes9x2005/) libretro core for wasm.",
   "main": "snes9x_2005.js",
   "module": "dist/index.js",
+  "source": "src/index.ts",
+  "exports": {
+    "wasm": "./dist/snes9x_2005.wasm",
+    "import": "./dist/index.js",
+    "types": "./dist/types/index.d.ts"
+  },
   "scripts": {
     "build": "node esbuild.config.mjs && tsc --emitDeclarationOnly"
   },
@@ -14,7 +20,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "types": "./snes9x_2005.d.ts",
   "bugs": {
     "url": "https://github.com/HenryLF/snes9x2005-wasm/issues"
   },

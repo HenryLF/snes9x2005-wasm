@@ -113,7 +113,7 @@ export class Emulator {
     this.emulationRunning ? this.pauseEmulation() : this.startEmulation();
   }
 
-  paintNewFrame(buffer: Uint8Array) {
+  private paintNewFrame(buffer: Uint8Array) {
     const imgData = new ImageData(WIDTH, HEIGHT);
     for (var i = 0; i < FRAME_BUFFER_SIZE; i++) imgData.data[i] = buffer[i];
     this.ctx.putImageData(imgData, 0, 0, 0, 0, this.cvs.width, this.cvs.height);
@@ -134,5 +134,11 @@ export class Emulator {
     var statePtr = this.setUint8ArrayToCMemory(state);
     this.WASM._loadState(statePtr, state.length);
     this.WASM._my_free(statePtr);
+  }
+
+  loadRom(rom: Uint8Array) {
+    var romPtr = this.setUint8ArrayToCMemory(rom);
+    this.WASM._startWithRom(romPtr, rom.length, SAMPLE_RATE);
+    this.WASM._my_free(romPtr);
   }
 }

@@ -34,7 +34,10 @@ export const defaultInputMap = {
   r: SNES_CONTROL.R,
 };
 
-export function createKeyboardHandles(emulator: Emulator, map: InputMap) {
+export function createKeyboardHandles(
+  emulator: Emulator,
+  map: InputMap = defaultInputMap
+) {
   return {
     keydown: (ev: KeyboardEvent) => {
       const key = ev.key;
