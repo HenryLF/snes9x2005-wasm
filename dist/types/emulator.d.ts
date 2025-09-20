@@ -18,10 +18,10 @@ export declare class Emulator {
     private initEmulation;
     private initCanvas;
     private requestNextFrame;
+    private paintNewFrame;
     pauseEmulation(): void;
     startEmulation(): void;
     toggleEmulationRun(): void;
-    paintNewFrame(buffer: Uint8Array): void;
     saveState(): Uint8Array<ArrayBuffer> | undefined;
     loadState(state: Uint8Array): void;
     loadRom(rom: Uint8Array): void;
