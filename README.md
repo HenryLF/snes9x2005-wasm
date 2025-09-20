@@ -1,6 +1,6 @@
 # Snes9x2005 - WASM
 
-A typescript abstraction arround the port of [snes9x2005](https://github.com/libretro/snes9x2005/) libretro core for wasm by kazuki-4ys.
+A typescript abstraction around the port of [snes9x2005](https://github.com/libretro/snes9x2005/) libretro core for wasm by kazuki-4ys.
 
 # Usage
 

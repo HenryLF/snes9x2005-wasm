@@ -49,7 +49,9 @@ export class Emulator {
       emulator.initEmulation(romData);
       return emulator;
     } catch (error) {
-      throw new Error(`Snes9x_2005-WASM:: Initialization error.\n ${error}`);
+      throw new Error(`Snes9x_2005-WASM:: Initialization error.
+        Did you supply a wasm blob https://github.com/HenryLF/snes9x2005-wasm ? 
+        ${error}`);
     }
   }
 
@@ -102,6 +104,12 @@ export class Emulator {
     }
   }
 
+  private paintNewFrame(buffer: Uint8Array) {
+    const imgData = new ImageData(WIDTH, HEIGHT);
+    for (var i = 0; i < FRAME_BUFFER_SIZE; i++) imgData.data[i] = buffer[i];
+    this.ctx.putImageData(imgData, 0, 0, 0, 0, this.cvs.width, this.cvs.height);
+  }
+
   pauseEmulation() {
     this.emulationRunning = false;
   }
@@ -111,12 +119,6 @@ export class Emulator {
   }
   toggleEmulationRun() {
     this.emulationRunning ? this.pauseEmulation() : this.startEmulation();
-  }
-
-  private paintNewFrame(buffer: Uint8Array) {
-    const imgData = new ImageData(WIDTH, HEIGHT);
-    for (var i = 0; i < FRAME_BUFFER_SIZE; i++) imgData.data[i] = buffer[i];
-    this.ctx.putImageData(imgData, 0, 0, 0, 0, this.cvs.width, this.cvs.height);
   }
 
   saveState() {
