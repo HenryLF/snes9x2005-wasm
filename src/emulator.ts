@@ -21,10 +21,10 @@ export class Emulator {
   ctx: CanvasRenderingContext2D;
   WASM: SNES9xModule;
   emulationRunning: boolean = true;
-  audioNode: EmulatorAudio;
+  private audioNode: EmulatorAudio;
 
   audioOn: boolean = true;
-  keyInput: number = 0;
+  private keyInput: number = 0;
   private setUint8ArrayToCMemory(src: Uint8Array) {
     var buffer = this.WASM._my_malloc(src.length);
     this.WASM.HEAP8.set(src, buffer);
@@ -142,5 +142,9 @@ export class Emulator {
     var romPtr = this.setUint8ArrayToCMemory(rom);
     this.WASM._startWithRom(romPtr, rom.length, SAMPLE_RATE);
     this.WASM._my_free(romPtr);
+  }
+
+  setVolume(k: number) {
+    this.audioNode.setVolume(k);
   }
 }

@@ -1,4 +1,3 @@
-import { EmulatorAudio } from "./audio.js";
 import { SNES9xModule } from "./snes9x_2005.js";
 export interface EmulatorOption {
     wasmPath: string;
@@ -9,9 +8,9 @@ export declare class Emulator {
     ctx: CanvasRenderingContext2D;
     WASM: SNES9xModule;
     emulationRunning: boolean;
-    audioNode: EmulatorAudio;
+    private audioNode;
     audioOn: boolean;
-    keyInput: number;
+    private keyInput;
     private setUint8ArrayToCMemory;
     static create(romData: Uint8Array, cvs: HTMLCanvasElement, options?: Partial<EmulatorOption>): Promise<Emulator>;
     private constructor();
@@ -25,4 +24,5 @@ export declare class Emulator {
     saveState(): Uint8Array<ArrayBuffer> | undefined;
     loadState(state: Uint8Array): void;
     loadRom(rom: Uint8Array): void;
+    setVolume(k: number): void;
 }

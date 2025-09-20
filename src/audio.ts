@@ -1,8 +1,11 @@
 const AUDIO_SAMPLE_RATE = 36000;
 
 export class EmulatorAudio extends AudioContext {
+  volume: GainNode;
   constructor() {
     super({ sampleRate: AUDIO_SAMPLE_RATE });
+    this.volume = this.createGain();
+    this.volume.gain.setValueAtTime(0.5, this.currentTime);
   }
   receiveAudio(audio: Float32Array) {
     const buffer = this.createBuffer(2, 2048, AUDIO_SAMPLE_RATE);
@@ -13,7 +16,11 @@ export class EmulatorAudio extends AudioContext {
     const source = this.createBufferSource();
     source.buffer = buffer;
 
-    source.connect(this.destination);
+    source.connect(this.volume);
+    this.volume.connect(this.destination);
     source.start();
+  }
+  setVolume(k: number) {
+    this.volume.gain.setValueAtTime(k / 100, this.currentTime);
   }
 }
