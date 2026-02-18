@@ -1,4 +1,4 @@
-export { Emulator } from "./emulator";
+export { Emulator, type EmulatorOption } from "./emulator";
 export {
   createInputHandle,
   createKeyboardHandles,
