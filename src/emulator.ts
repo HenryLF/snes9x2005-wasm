@@ -24,7 +24,7 @@ export class Emulator {
   private audioNode: EmulatorAudio;
 
   audioOn: boolean = true;
-  private keyInput: number = 0;
+  keyInput: number = 0;
   private setUint8ArrayToCMemory(src: Uint8Array) {
     var buffer = this.WASM._my_malloc(src.length);
     this.WASM.HEAP8.set(src, buffer);
@@ -34,14 +34,14 @@ export class Emulator {
   static async create(
     romData: Uint8Array,
     cvs: HTMLCanvasElement,
-    options?: Partial<EmulatorOption>
+    options?: Partial<EmulatorOption>,
   ): Promise<Emulator> {
     const { wasmPath, audioOn } = { ...defaultOption, ...options };
     try {
       const wasm = await createSnes9xModule({
         locateFile() {
-          if (wasmPath.startsWith("http")) return wasmPath;
-          return new URL(wasmPath, import.meta.url).href;
+          if (URL.canParse(wasmPath)) return wasmPath;
+          return new URL(wasmPath, window.location.toString()).href;
         },
       });
       const emulator = new Emulator(cvs, wasm);
@@ -50,8 +50,9 @@ export class Emulator {
       return emulator;
     } catch (error) {
       throw new Error(`Snes9x_2005-WASM:: Initialization error.
-        Did you supply a wasm blob https://github.com/HenryLF/snes9x2005-wasm ? 
-        ${error}`);
+        Did you supply a wasm blob https://github.com/HenryLF/snes9x2005-wasm ?
+        provided path :: ${wasmPath} 
+        error :: ${error}`);
     }
   }
 
@@ -63,7 +64,7 @@ export class Emulator {
     const ctx = cvs.getContext("2d");
     if (!ctx)
       throw new Error(
-        "Snes9x_2005-WASM:: Invalid canvas element, unable to get rendering context."
+        "Snes9x_2005-WASM:: Invalid canvas element, unable to get rendering context.",
       );
     this.ctx = ctx;
   }
@@ -87,14 +88,14 @@ export class Emulator {
     var frameBufferRawData = new Uint8Array(
       this.WASM.HEAP8.buffer,
       frameBufferPtr,
-      FRAME_BUFFER_SIZE
+      FRAME_BUFFER_SIZE,
     );
     this.paintNewFrame(frameBufferRawData);
     if (this.audioOn) {
       const soundBuffer = new Float32Array(
         this.WASM.HEAPF32.buffer,
         this.WASM._getSoundBuffer(),
-        2048 * 2
+        2048 * 2,
       );
       this.audioNode.receiveAudio(soundBuffer);
     }
@@ -126,7 +127,7 @@ export class Emulator {
     var statePtr = this.WASM._saveState();
     if (statePtr == 0) return;
     var state = new Uint8Array(
-      new Uint8Array(this.WASM.HEAP8.buffer, statePtr, stateSize)
+      new Uint8Array(this.WASM.HEAP8.buffer, statePtr, stateSize),
     );
     this.WASM._my_free(statePtr);
     return state;

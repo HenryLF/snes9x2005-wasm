@@ -10,7 +10,7 @@ export declare class Emulator {
     emulationRunning: boolean;
     private audioNode;
     audioOn: boolean;
-    private keyInput;
+    keyInput: number;
     private setUint8ArrayToCMemory;
     static create(romData: Uint8Array, cvs: HTMLCanvasElement, options?: Partial<EmulatorOption>): Promise<Emulator>;
     private constructor();
