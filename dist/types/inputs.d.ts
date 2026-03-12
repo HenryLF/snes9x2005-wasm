@@ -1,4 +1,3 @@
-import { Emulator } from "./emulator";
 export declare enum SNES_CONTROL {
     A = 128,
     B = 32768,
@@ -13,9 +12,10 @@ export declare enum SNES_CONTROL {
     DOWN = 1024,
     UP = 2048
 }
-type InputMap = {
+export type InputMap = {
     [key: KeyboardEvent["key"]]: SNES_CONTROL;
 };
+export type KeyBoardHandle = (ev: KeyboardEvent) => void;
 export declare const defaultInputMap: {
     ArrowDown: SNES_CONTROL;
     ArrowUp: SNES_CONTROL;
@@ -30,9 +30,3 @@ export declare const defaultInputMap: {
     l: SNES_CONTROL;
     r: SNES_CONTROL;
 };
-export declare function createKeyboardHandles(emulator: Emulator, map?: InputMap): {
-    keydown: (ev: KeyboardEvent) => void;
-    keyup: (ev: KeyboardEvent) => void;
-};
-export declare function createInputHandle(emulator: Emulator): (input: SNES_CONTROL, on?: boolean) => void;
-export {};

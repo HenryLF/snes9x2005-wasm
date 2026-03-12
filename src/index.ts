@@ -1,6 +1,2 @@
 export { Emulator, type EmulatorOption } from "./emulator";
-export {
-  createInputHandle,
-  createKeyboardHandles,
-  SNES_CONTROL,
-} from "./inputs";
+export { SNES_CONTROL, type InputMap, defaultInputMap } from "./inputs";

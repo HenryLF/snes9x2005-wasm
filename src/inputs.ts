@@ -1,5 +1,3 @@
-import { Emulator } from "./emulator";
-
 export enum SNES_CONTROL {
   A = 1 << 7,
   B = 1 << 15,
@@ -15,9 +13,11 @@ export enum SNES_CONTROL {
   UP = 1 << 11,
 }
 
-type InputMap = {
+export type InputMap = {
   [key: KeyboardEvent["key"]]: SNES_CONTROL;
 };
+
+export type KeyBoardHandle = (ev: KeyboardEvent) => void
 
 export const defaultInputMap = {
   ArrowDown: SNES_CONTROL.DOWN,
@@ -33,35 +33,3 @@ export const defaultInputMap = {
   l: SNES_CONTROL.L,
   r: SNES_CONTROL.R,
 };
-
-export function createKeyboardHandles(
-  emulator: Emulator,
-  map: InputMap = defaultInputMap
-) {
-  return {
-    keydown: (ev: KeyboardEvent) => {
-      const key = ev.key;
-      const input = map[key];
-      if (input) {
-        emulator.keyInput = emulator.keyInput | input;
-      }
-    },
-    keyup: (ev: KeyboardEvent) => {
-      const key = ev.key;
-      const input = map[key];
-      if (input) {
-        emulator.keyInput = emulator.keyInput & (0xffffffff ^ input);
-      }
-    },
-  };
-}
-
-export function createInputHandle(emulator: Emulator) {
-  return (input: SNES_CONTROL, on: boolean = true) => {
-    if (on) {
-      emulator.keyInput = emulator.keyInput | input;
-    } else {
-      emulator.keyInput = emulator.keyInput & (0xffffffff ^ input);
-    }
-  };
-}
