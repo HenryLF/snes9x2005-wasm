@@ -24,11 +24,11 @@
     "url": "https://github.com/HenryLF/snes9x2005-wasm/issues"
   },
   "homepage": "https://github.com/HenryLF/snes9x2005-wasm#readme",
-  "dependencies": {
-    "esbuild": "^0.25.10"
-  },
   "files": [
     "dist",
     "src"
-  ]
+  ],
+  "devDependencies": {
+    "esbuild": "^0.27.4"
+  }
 }
