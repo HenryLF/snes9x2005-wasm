@@ -13,23 +13,44 @@ export enum SNES_CONTROL {
   UP = 1 << 11,
 }
 
-export type InputMap = {
-  [key: KeyboardEvent["key"]]: SNES_CONTROL;
+export const SNES_CONTROL_KEYS = [
+  "A",
+  "B",
+  "X",
+  "Y",
+  "SELECT",
+  "START",
+  "L",
+  "R",
+  "RIGHT",
+  "LEFT",
+  "DOWN",
+  "UP",
+];
+
+export type InputMap = Record<SNES_CONTROL, string>;
+
+export type KeyBoardHandle = (ev: KeyboardEvent) => void;
+
+export const defaultInputMap : InputMap = {
+  [SNES_CONTROL.DOWN]: "ArrowDown",
+  [SNES_CONTROL.UP]: "ArrowUp",
+  [SNES_CONTROL.LEFT]: "ArrowLeft",
+  [SNES_CONTROL.RIGHT]: "ArrowRight",
+  [SNES_CONTROL.A]: "a",
+  [SNES_CONTROL.B]: "b",
+  [SNES_CONTROL.X]: "x",
+  [SNES_CONTROL.Y]: "y",
+  [SNES_CONTROL.START]: "s",
+  [SNES_CONTROL.SELECT]: "d",
+  [SNES_CONTROL.L]: "l",
+  [SNES_CONTROL.R]: "r",
 };
 
-export type KeyBoardHandle = (ev: KeyboardEvent) => void
-
-export const defaultInputMap = {
-  ArrowDown: SNES_CONTROL.DOWN,
-  ArrowUp: SNES_CONTROL.UP,
-  ArrowLeft: SNES_CONTROL.LEFT,
-  ArrowRight: SNES_CONTROL.RIGHT,
-  a: SNES_CONTROL.A,
-  b: SNES_CONTROL.B,
-  x: SNES_CONTROL.X,
-  y: SNES_CONTROL.Y,
-  o: SNES_CONTROL.START,
-  p: SNES_CONTROL.SELECT,
-  l: SNES_CONTROL.L,
-  r: SNES_CONTROL.R,
-};
+export function reverseInputMap(map: InputMap) {
+  const out: Record<string, number> = {};
+  for (const [key, value] of Object.entries(map)) {
+    out[value] = parseInt(key);
+  }
+  return out;
+}

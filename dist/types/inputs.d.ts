@@ -12,21 +12,8 @@ export declare enum SNES_CONTROL {
     DOWN = 1024,
     UP = 2048
 }
-export type InputMap = {
-    [key: KeyboardEvent["key"]]: SNES_CONTROL;
-};
+export declare const SNES_CONTROL_KEYS: string[];
+export type InputMap = Record<SNES_CONTROL, string>;
 export type KeyBoardHandle = (ev: KeyboardEvent) => void;
-export declare const defaultInputMap: {
-    ArrowDown: SNES_CONTROL;
-    ArrowUp: SNES_CONTROL;
-    ArrowLeft: SNES_CONTROL;
-    ArrowRight: SNES_CONTROL;
-    a: SNES_CONTROL;
-    b: SNES_CONTROL;
-    x: SNES_CONTROL;
-    y: SNES_CONTROL;
-    o: SNES_CONTROL;
-    p: SNES_CONTROL;
-    l: SNES_CONTROL;
-    r: SNES_CONTROL;
-};
+export declare const defaultInputMap: InputMap;
+export declare function reverseInputMap(map: InputMap): Record<string, number>;

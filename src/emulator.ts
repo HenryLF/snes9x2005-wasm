@@ -3,6 +3,7 @@ import {
   defaultInputMap,
   InputMap,
   KeyBoardHandle,
+  reverseInputMap,
   SNES_CONTROL,
 } from "./inputs.js";
 import createSnes9xModule, { SNES9xModule } from "./snes9x_2005.js";
@@ -177,28 +178,29 @@ export class Emulator {
   createKeyboardHandles(
     map: InputMap,
     jsx: false,
-  ): { keyup: KeyBoardHandle; keydown: KeyBoardHandle };
+  ): { onkeyup: KeyBoardHandle; onkeydown: KeyBoardHandle };
   createKeyboardHandles(map: InputMap = defaultInputMap, jsx: boolean = false) {
-    const keydown = (ev: KeyboardEvent) => {
+    const reversedMap = reverseInputMap(map)
+    const onkeydown = (ev: KeyboardEvent) => {
       const key = ev.key;
-      const input = map[key];
+      const input = reversedMap[key];
       if (input) {
         this.keyInput = this.keyInput | input;
       }
     };
-    const keyup = (ev: KeyboardEvent) => {
+    const onkeyup = (ev: KeyboardEvent) => {
       const key = ev.key;
-      const input = map[key];
+      const input = reversedMap[key];
       if (input) {
         this.keyInput = this.keyInput & (0xffffffff ^ input);
       }
     };
     if (jsx)
       return {
-        onKeyUp: keyup,
-        onKeyDown: keydown,
+        onKeyUp: onkeyup,
+        onKeyDown: onkeydown,
       };
-    return { keydown, keyup };
+    return { onkeydown,  onkeyup };
   }
 
   inputHandle(input: SNES_CONTROL, on: boolean = true) {
@@ -209,3 +211,5 @@ export class Emulator {
     }
   }
 }
+
+

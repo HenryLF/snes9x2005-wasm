@@ -65,26 +65,27 @@ Returns pre‑bound event listeners that you can attach to the window or any DOM
 ```ts
 import { defaultInputMap } from 'snes9x2005-wasm';
 
-const handlers = emulator.createKeyboardHandles(defaultInputMap, false); // false = use 'keydown'/'keyup' names
-window.addEventListener('keydown', handlers.keydown);
-window.addEventListener('keyup', handlers.keyup);
+const handlers = emulator.createKeyboardHandles(defaultInputMap, false); // false = use 'onkeydown'/'onkeyup' names
+window.addEventListener('keydown', handlers.onkeydown);
+window.addEventListener('keyup', handlers.onkeyup);
 ```
 
 If you prefer React/JSX style props, set the second parameter to `true`:
 
 ```ts
 const jsxHandlers = emulator.createKeyboardHandles(myCustomMap, true);
-// returns { onKeyUp, onKeyDown }
+// returns { onKeyDown, onKeyUp }
 ```
 
-The input map defines which keyboard key triggers which SNES control:
+The input map defines which SNES control is triggered by which keyboard key. Note that the map is a **record of SNES_CONTROL to key string**:
 
 ```ts
 import { SNES_CONTROL, type InputMap } from 'snes9x2005-wasm';
 
 const myMap: InputMap = {
-  ArrowUp: SNES_CONTROL.UP,
-  ArrowDown: SNES_CONTROL.DOWN,
+  [SNES_CONTROL.UP]: 'ArrowUp',
+  [SNES_CONTROL.DOWN]: 'ArrowDown',
+  [SNES_CONTROL.A]: 'a',
   // ...
 };
 ```
@@ -161,7 +162,7 @@ class Emulator {
   createKeyboardHandles(
     map?: InputMap,
     jsx?: boolean
-  ): { keydown: KeyBoardHandle; keyup: KeyBoardHandle } |
+  ): { onkeydown: KeyBoardHandle; onkeyup: KeyBoardHandle } |
      { onKeyDown: KeyBoardHandle; onKeyUp: KeyBoardHandle };
   inputHandle(input: SNES_CONTROL, on?: boolean): void;
 
@@ -193,13 +194,11 @@ enum SNES_CONTROL {
   UP = 1 << 11,
 }
 
-type InputMap = {
-  [key: KeyboardEvent['key']]: SNES_CONTROL;
-};
+type InputMap = Record<SNES_CONTROL, string>;
 
 export const defaultInputMap: InputMap;
 ```
 
 ## WASM Blob
 
-The WASM file (`snes9x_2005.wasm`) is **not** included in the npm package. You can download it from here or build it yourself using the provided `build-esm.sh` script. Place it in your public folder and provide its path via the `wasmPath` option.
+The WASM file (`snes9x_2005.wasm`) is **not** included in the npm package. You can download it from [here](https://github.com/HenryLF/snes9x2005-wasm/releases) or build it yourself using the provided `build-esm.sh` script. Place it in your public folder and provide its path via the `wasmPath` option.

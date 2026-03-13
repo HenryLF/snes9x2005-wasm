@@ -34,8 +34,8 @@ export declare class Emulator {
         onKeyDown: KeyBoardHandle;
     };
     createKeyboardHandles(map: InputMap, jsx: false): {
-        keyup: KeyBoardHandle;
-        keydown: KeyBoardHandle;
+        onkeyup: KeyBoardHandle;
+        onkeydown: KeyBoardHandle;
     };
     inputHandle(input: SNES_CONTROL, on?: boolean): void;
 }
